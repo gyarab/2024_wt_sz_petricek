@@ -2,9 +2,13 @@
 
 
 Odkazy:
+
 https://cs.wikipedia.org/wiki/Joseph_Weizenbaum
+
 https://en.wikipedia.org/wiki/Joseph_Weizenbaum
+
 https://www.vize.cz/wp-content/uploads/2016/05/laureat-joseph-weizenbaum-cz-bio.pdf
+
 https://wikisofia.cz/wiki/Joseph_Weizenbaum
 
 
