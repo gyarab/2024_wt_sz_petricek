@@ -1,4 +1,4 @@
-# 2024_wt_sz_petricek
+
 ## Josef Weizenbaum 
 (1923 - 2008)
 Joseph Weizenbaum byl německo-americký počítačový vědec a profesor na MIT, známý především jako tvůrce programu ELIZA, jednoho z prvních chatbotů. Weizenbaum se narodil 8. ledna 1923 v Berlíně a v roce 1936 uprchl s rodinou před nacisty do Spojených států.
