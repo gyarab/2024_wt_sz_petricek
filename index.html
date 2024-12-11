@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pexeso Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .card {
+            width: 80px;
+            height: 80px;
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .card.flipped {
+            background-color: #e9ecef;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="my-4">Pexeso Game</h1>
+        <div id="score" class="mb-3">Score: 0</div>
+        <div class="game-board" id="game-board"></div>
+        <button id="reset" class="btn btn-primary mt-4">Reset Game</button>
+    </div>
+
+    <script>
+        class Card {
+            constructor(id, image) {
+                this.id = id;
+                this.image = image;
+                this.flipped = false;
+            }
+        }
+
+        class Game {
+            constructor(images) {
+                this.images = images;
+                this.cards = [];
+                this.flippedCards = [];
+                this.score = 0;
+                this.gameBoard = document.getElementById('game-board');
+                this.scoreElement = document.getElementById('score');
+                this.resetButton = document.getElementById('reset');
+                this.resetButton.addEventListener('click', () => this.initializeGame());
+            }
+
+            initializeGame() {
+                this.cards = this.shuffleCards(
+                    [...this.images, ...this.images].map((image, index) => new Card(index, image))
+                );
+                this.flippedCards = [];
+                this.score = 0;
+                this.updateScore();
+                this.renderBoard();
+            }
+
+            shuffleCards(array) {
+                return array.sort(() => Math.random() - 0.5);
+            }
+
+            flipCard(id) {
+                const card = this.cards.find(c => c.id === id);
+                if (card.flipped || this.flippedCards.length === 2) return;
+
+                card.flipped = true;
+                this.flippedCards.push(card);
+                this.renderBoard();
+
+                if (this.flippedCards.length === 2) {
+                    this.checkMatch();
+                }
+            }
+
+            checkMatch() {
+                const [card1, card2] = this.flippedCards;
+                if (card1.image === card2.image) {
+                    this.score++;
+                    this.updateScore();
+                    this.flippedCards = [];
+                } else {
+                    setTimeout(() => {
+                        card1.flipped = false;
+                        card2.flipped = false;
+                        this.flippedCards = [];
+                        this.renderBoard();
+                    }, 1000);
+                }
+            }
+
+            updateScore() {
+                this.scoreElement.textContent = `Score: ${this.score}`;
+            }
+
+            renderBoard() {
+                this.gameBoard.innerHTML = '';
+                this.cards.forEach(card => {
+                    const cardElement = document.createElement('div');
+                    cardElement.classList.add('card');
+                    if (card.flipped) {
+                        const img = document.createElement('img');
+                        img.src = card.image;
+                        img.alt = 'Pexeso card';
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        cardElement.appendChild(img);
+
+                        cardElement.classList.add('flipped');
+                    }
+                    cardElement.addEventListener('click', () => this.flipCard(card.id));
+                    this.gameBoard.appendChild(cardElement);
+                });
+            }
+        }
+
+        
+        const images = [
+            'https://upload.wikimedia.org/wikipedia/commons/9/9f/SK_Slavia_Praha_logo_%281996%E2%80%932022%29.svg',
+            'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',
+            'https://upload.wikimedia.org/wikipedia/commons/e/ec/FC_Ban%C3%ADk_Ostrava_%28logo%29.svg',
+            'https://fcslovanliberec.cz/img/slovan_cmyk.png',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQUimMM5YsfA9LPQRMYt2-SG2Pm0DjZCzIAQ&s',
+            'https://upload.wikimedia.org/wikipedia/commons/5/51/Juventus_FC_2017_logo.png',
+            'https://images.seeklogo.com/logo-png/25/2/psg-logo-png_seeklogo-256583.png?v=638687136650000000https://upload.wikimedia.org/wikipedia/sco/thumb/a/a7/Paris_Saint-Germain_F.C..svg/2048px-Paris_Saint-Germain_F.C..svg.png',
+            'https://w7.pngwing.com/pngs/997/289/png-transparent-manchester-united-logo-food-text-sport.png'
+];
+
+               
+
+    
+
+             const pexesoGame = new Game(images);
+        pexesoGame.initializeGame();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
